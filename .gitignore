@@ -1,0 +1,10 @@
+.env
+
+# node.js
+#
+node_modules/
+
+
+# testing
+
+package-lock.json
