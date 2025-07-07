@@ -1,6 +1,7 @@
 const Course = require("../models/Course");
 
-// @desc    Get all courses
+// http://localhost:5000/api/courses
+
 exports.getCourses = async (req, res) => {
   try {
     const courses = await Course.find();
@@ -10,25 +11,49 @@ exports.getCourses = async (req, res) => {
   }
 };
 
-// @desc    Create new course
+
+
+// http://localhost:5000/api/courses
+// {
+//   "title": "Web Development",
+//   "description": "Learn the fundamentals of web development including HTML, CSS, and JavaScript",
+//   "content": "This comprehensive course covers basic web development concepts...",
+//   "instructor": "John John",
+//   "instructorId": "507f1f77bcf86cd799439012"
+// }
+
 exports.createCourse = async (req, res) => {
-  const { title, description, content, instructor, instructorId } = req.body;
   try {
-    const newCourse = new Course({
+    const { title, description, content, instructor, instructorId } = req.body;
+
+    const course = await Course.create({
       title,
       description,
       content,
       instructor,
       instructorId,
+      createdAt: new Date(),
     });
-    const saved = await newCourse.save();
-    res.status(201).json(saved);
+
+    res.status(201).json(course);
   } catch (error) {
-    res.status(400).json({ message: "Error creating course" });
+    console.error("❌ Error creating course:", error); // Add this line
+    res.status(500).json({ message: "Failed to create course" });
   }
 };
 
-// @desc    Update course
+
+
+// {
+//   "title": "Introduction to App Development",
+//   "description": "Learn the fundamentals of web development including HTML, CSS, and JavaScript",
+//   "content": "This comprehensive course covers basic web development concepts...",
+//   "instructor": "John Doe",
+//   "instructorId": "507f1f77bcf86cd799439011"
+// }
+//localhost:5000/api/courses/686beee23af50584c2afc998
+
+
 exports.updateCourse = async (req, res) => {
   try {
     const updated = await Course.findByIdAndUpdate(req.params.id, req.body, {
@@ -40,7 +65,8 @@ exports.updateCourse = async (req, res) => {
   }
 };
 
-// @desc    Delete course
+//localhost:5000/api/courses/686bf6c53af50584c2afc99c
+
 exports.deleteCourse = async (req, res) => {
   try {
     await Course.findByIdAndDelete(req.params.id);
@@ -50,17 +76,40 @@ exports.deleteCourse = async (req, res) => {
   }
 };
 
-// @desc    Enroll student
+
+
+// http://localhost:5000/api/courses/686beee23af50584c2afc998/enroll
+// {
+//   "studentId": "686c08c48d00a84d71a62302"
+// }
+//need Content-Type: application/json
+// Authorization: Bearer <JWT_TOKEN>
+
 exports.enrollInCourse = async (req, res) => {
   const { studentId } = req.body;
   try {
     const course = await Course.findById(req.params.id);
+
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    if (!studentId) {
+      return res
+        .status(400)
+        .json({ message: "Missing studentId in request body" });
+    }
+
     if (!course.enrolledStudents.includes(studentId)) {
       course.enrolledStudents.push(studentId);
       await course.save();
     }
+
     res.json(course);
   } catch (error) {
-    res.status(400).json({ message: "Enrollment failed" });
+    console.error("❌ Enrollment error:", error); 
+    res
+      .status(400)
+      .json({ message: "Enrollment failed", error: error.message });
   }
 };

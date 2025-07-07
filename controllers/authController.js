@@ -14,7 +14,16 @@ const generateToken = (user) => {
   );
 };
 
-// @route   POST /api/auth/register
+// POST /api/auth/register
+//http://localhost:5000/api/auth/register
+// {
+//   "name": "Thursika Mokanathan",
+//   "email": "thursika@gmail.com",
+//   "password": "thursika",
+//   "role": "student"
+// }
+
+
 exports.register = async (req, res) => {
   const { name, email, password, role } = req.body;
 
@@ -45,7 +54,15 @@ exports.register = async (req, res) => {
   }
 };
 
-// @route   POST /api/auth/login
+
+
+//POST /api/auth/login
+//http://localhost:5000/api/auth/login
+// {
+//   "email": "thursika@gmail.com",
+//   "password": "thursika"
+// }
+
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -72,7 +89,9 @@ exports.login = async (req, res) => {
 
 
 
+
 exports.getUsers = async (req, res) => {
+  //http://localhost:5000/api/auth/users
   try {
     const users = await User.find().select("-password"); // exclude password
     res.json(users);
@@ -83,7 +102,7 @@ exports.getUsers = async (req, res) => {
 };
 
 
-// @route   DELETE /api/auth/users/:id
+//DELETE /api/auth/users/:id
 exports.deleteUser = async (req, res) => {
     try {
       const { id } = req.params;

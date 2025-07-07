@@ -16,6 +16,10 @@ router.put("/:id", updateCourse);
 router.delete("/:id", deleteCourse);
 
 // Enroll route
-router.post("/:id/enroll", enrollInCourse);
+// router.post("/:id/enroll", enrollInCourse);
+//id is course id
+
+const verifyToken = require("../middleware/verifyToken");
+router.post("/:id/enroll", verifyToken, enrollInCourse);
 
 module.exports = router;

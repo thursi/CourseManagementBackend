@@ -14,10 +14,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use("/api/auth", authRoutes); // ✅ /api/auth/register, /api/auth/login
-app.use("/api/courses", courseRoutes); // ✅ /api/courses endpoints
+// ✅ If you’re using forms or sending x-www-form-urlencoded, add this too:
+// app.use(express.urlencoded({ extended: true }));
 
+app.use("/api/auth", authRoutes);
+app.use("/api/courses", courseRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)
