@@ -11,8 +11,6 @@ exports.getCourses = async (req, res) => {
   }
 };
 
-
-
 // http://localhost:5000/api/courses
 // {
 //   "title": "Web Development",
@@ -42,8 +40,6 @@ exports.createCourse = async (req, res) => {
   }
 };
 
-
-
 // {
 //   "title": "Introduction to App Development",
 //   "description": "Learn the fundamentals of web development including HTML, CSS, and JavaScript",
@@ -51,17 +47,39 @@ exports.createCourse = async (req, res) => {
 //   "instructor": "John Doe",
 //   "instructorId": "507f1f77bcf86cd799439011"
 // }
-//localhost:5000/api/courses/686beee23af50584c2afc998
+//localhost:5000/api/courses/686beee23af50584c2afc998 this is course id
 
+// exports.updateCourse = async (req, res) => {
+//   try {
+//     const updated = await Course.findByIdAndUpdate(req.params.id, req.body, {
+//       new: true,
+//     });
+//     res.json(updated);
+//   } catch (error) {
+//     res.status(400).json({ message: "Error updating course" });
+//   }
+// };
 
 exports.updateCourse = async (req, res) => {
   try {
+    console.log("Updating course id:", req.params.id);
+    console.log("Update data:", req.body);
+
     const updated = await Course.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
+
+    if (!updated) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    console.log("Updated course:", updated);
     res.json(updated);
   } catch (error) {
-    res.status(400).json({ message: "Error updating course" });
+    console.error("Error updating course:", error);
+    res
+      .status(400)
+      .json({ message: "Error updating course", error: error.message });
   }
 };
 
@@ -75,8 +93,6 @@ exports.deleteCourse = async (req, res) => {
     res.status(400).json({ message: "Error deleting course" });
   }
 };
-
-
 
 // http://localhost:5000/api/courses/686beee23af50584c2afc998/enroll
 // {
@@ -107,7 +123,7 @@ exports.enrollInCourse = async (req, res) => {
 
     res.json(course);
   } catch (error) {
-    console.error("❌ Enrollment error:", error); 
+    console.error("❌ Enrollment error:", error);
     res
       .status(400)
       .json({ message: "Enrollment failed", error: error.message });

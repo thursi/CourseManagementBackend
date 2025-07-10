@@ -23,7 +23,6 @@ const generateToken = (user) => {
 //   "role": "student"
 // }
 
-
 exports.register = async (req, res) => {
   const { name, email, password, role } = req.body;
 
@@ -53,8 +52,6 @@ exports.register = async (req, res) => {
     res.status(500).json({ message: "Registration failed" });
   }
 };
-
-
 
 //POST /api/auth/login
 //http://localhost:5000/api/auth/login
@@ -87,9 +84,6 @@ exports.login = async (req, res) => {
   }
 };
 
-
-
-
 exports.getUsers = async (req, res) => {
   //http://localhost:5000/api/auth/users
   try {
@@ -101,20 +95,18 @@ exports.getUsers = async (req, res) => {
   }
 };
 
-
 //DELETE /api/auth/users/:id
 exports.deleteUser = async (req, res) => {
-    try {
-      const { id } = req.params;
-  
-      const user = await User.findByIdAndDelete(id);
-  
-      if (!user) return res.status(404).json({ message: 'User not found' });
-  
-      res.json({ message: 'User deleted successfully' });
-    } catch (err) {
-      console.error('Error deleting user:', err);
-      res.status(500).json({ message: 'Failed to delete user' });
-    }
-  };
-  
+  try {
+    const { id } = req.params;
+
+    const user = await User.findByIdAndDelete(id);
+
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    res.json({ message: "User deleted successfully" });
+  } catch (err) {
+    console.error("Error deleting user:", err);
+    res.status(500).json({ message: "Failed to delete user" });
+  }
+};

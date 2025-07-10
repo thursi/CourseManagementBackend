@@ -9,10 +9,10 @@ const {
 
 const router = express.Router();
 
-// CRUD Routes
 router.get("/", getCourses);
 router.post("/", createCourse);
 router.put("/:id", updateCourse);
+// router.put("/api/courses/:id",updateCourse);
 router.delete("/:id", deleteCourse);
 
 // Enroll route
