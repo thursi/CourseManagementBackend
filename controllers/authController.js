@@ -1,6 +1,8 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
+// created the token//
 const generateToken = (user) => {
   return jwt.sign(
     {
@@ -13,6 +15,14 @@ const generateToken = (user) => {
     }
   );
 };
+
+
+// 4. Expiration Time
+// javascript{
+//   expiresIn: "7d",
+// }
+
+
 
 // POST /api/auth/register
 //http://localhost:5000/api/auth/register

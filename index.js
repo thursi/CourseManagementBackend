@@ -11,7 +11,13 @@ const authRoutes = require("./routes/authRoutes");
 const app = express();
 
 // Middlewares
-app.use(cors());
+// app.use(cors());
+app.use(
+  cors({
+    origin: "http://192.168.8.142:5000", // Replace with your frontend dev IP + port
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // ✅ If you’re using forms or sending x-www-form-urlencoded, add this too:
